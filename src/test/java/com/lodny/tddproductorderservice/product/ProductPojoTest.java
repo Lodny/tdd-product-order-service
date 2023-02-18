@@ -1,6 +1,5 @@
 package com.lodny.tddproductorderservice.product;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
@@ -11,10 +10,14 @@ import java.util.Map;
 public class ProductPojoTest {
 
     private ProductController productController;
+    private ProductService productService;
+    private ProductRepository productRepository;
 
     @BeforeEach
     void setUp() {
-        productController = new ProductController();
+        productRepository = new ProductRepository();
+        productService = new ProductService(productRepository);
+        productController = new ProductController(productService);
     }
 
     @Test
@@ -38,7 +41,11 @@ public class ProductPojoTest {
     }
 
     private static class ProductController {
-        private ProductService productService;
+        private final ProductService productService;
+
+        public ProductController(final ProductService productService) {
+            this.productService = productService;
+        }
 
         public void addProduct(final AddProductRequest addProductRequest) {
             productService.addProduct(addProductRequest);
@@ -46,7 +53,11 @@ public class ProductPojoTest {
     }
 
     private static class ProductService {
-        private ProductRepository productRepository;
+        private final ProductRepository productRepository;
+
+        public ProductService(final ProductRepository productRepository) {
+            this.productRepository = productRepository;
+        }
 
         public void addProduct(final AddProductRequest addProductRequest) {
             Product product = new Product(addProductRequest.name, addProductRequest.price, addProductRequest.discountPolicy);
@@ -55,24 +66,37 @@ public class ProductPojoTest {
     }
 
     private static class Product {
-        private final String name;
-        private final int price;
-        private final DiscountPolicy discountPolicy;
+        private Long id;
+        private String name;
+        private int price;
+        private DiscountPolicy discountPolicy;
 
         public Product(final String name, final int price, final DiscountPolicy discountPolicy) {
+            Assert.hasText(name, "상품 명은 필수 입니다.");
+            Assert.isTrue(price > 0, "상품 가격은 0보다 커야 합니다.");
+            Assert.notNull(discountPolicy, "할인 정책은 필수 입니다");
             this.name = name;
             this.price = price;
             this.discountPolicy = discountPolicy;
+        }
+
+        public void setId(final Long id) {
+            this.id = id;
+        }
+
+        public Long getId() {
+            return id;
         }
     }
 
     private static class ProductRepository {
 
-        private final Map<Long, Product> productMap = new HashMap<>();
+        private final Map<Long, Product> persistence = new HashMap<>();
         private Long sequence = 0L;
 
         public void save(final Product product) {
-            productMap.put(sequence++, product);
+            product.setId(++sequence);
+            persistence.put(sequence, product);
         }
     }
 }
