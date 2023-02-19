@@ -1,6 +1,7 @@
 package com.lodny.tddproductorderservice.product;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 class ProductService {
@@ -10,6 +11,7 @@ class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public Product addProduct(final Product product) {
         return productRepository.save(product);
     }
