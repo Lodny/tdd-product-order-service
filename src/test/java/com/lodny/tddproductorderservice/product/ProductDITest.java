@@ -3,9 +3,10 @@ package com.lodny.tddproductorderservice.product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.stereotype.Component;
 
-@Component
+@SpringBootTest
 public class ProductDITest {
 
     @Autowired
@@ -13,10 +14,15 @@ public class ProductDITest {
 
     @Test
     void registerProductTest() {
+        final AddProductRequest addProductRequest = 상품생성();
+        productController.addProduct(addProductRequest);
+    }
+
+    private static AddProductRequest 상품생성() {
         final String name = "상품명";
         final int price = 1000;
-        final AddProductRequest addProductRequest = new AddProductRequest(name, price, DiscountPolicy.NONE);
-        productController.addProduct(addProductRequest);
+        DiscountPolicy discountPolicy = DiscountPolicy.NONE;
+        return new AddProductRequest(name, price, discountPolicy);
     }
 
 }
