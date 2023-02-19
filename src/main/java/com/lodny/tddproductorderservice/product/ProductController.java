@@ -1,5 +1,8 @@
 package com.lodny.tddproductorderservice.product;
 
+import org.springframework.stereotype.Controller;
+
+@Controller
 class ProductController {
     private final ProductService productService;
 

@@ -1,5 +1,8 @@
 package com.lodny.tddproductorderservice.product;
 
+import org.springframework.stereotype.Service;
+
+@Service
 class ProductService {
     private final ProductRepository productRepository;
 
