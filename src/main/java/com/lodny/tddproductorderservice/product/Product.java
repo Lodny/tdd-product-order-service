@@ -1,8 +1,18 @@
 package com.lodny.tddproductorderservice.product;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 
+import javax.persistence.*;
+
+@Entity
+@Getter
+@Table(name = "t_product")
+@NoArgsConstructor
 class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int price;
@@ -15,13 +25,5 @@ class Product {
         this.name = name;
         this.price = price;
         this.discountPolicy = discountPolicy;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
     }
 }

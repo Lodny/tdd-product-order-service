@@ -11,7 +11,7 @@ public class ProductPojoTest {
 
     @BeforeEach
     void setUp() {
-        productRepository = new ProductRepository();
+// error : memory to jpa        productRepository = new ProductRepository();
         productService = new ProductService(productRepository);
         productController = new ProductController(productService);
     }
