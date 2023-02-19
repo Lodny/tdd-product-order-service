@@ -18,16 +18,19 @@ public class ProductApiTest extends ApiTest {
     @Test
     void registerProductTest() {
         final AddProductRequest addProductRequest = 상품생성();
+        final ExtractableResponse<Response> response = 상품등록(addProductRequest);
 
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+    }
+
+    private static ExtractableResponse<Response> 상품등록(final AddProductRequest addProductRequest) {
+        return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(addProductRequest)
                 .when()
                 .post("/products")
                 .then()
                 .log().all().extract();
-
-        assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
     }
 
     private static AddProductRequest 상품생성() {
