@@ -1,5 +1,6 @@
 package com.lodny.tddproductorderservice.product;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
@@ -9,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name = "t_product")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
