@@ -11,8 +11,9 @@ class ProductRepository {
     private final Map<Long, Product> persistence = new HashMap<>();
     private Long sequence = 0L;
 
-    public void save(final Product product) {
+    public Product save(final Product product) {
         product.setId(++sequence);
         persistence.put(sequence, product);
+        return product;
     }
 }

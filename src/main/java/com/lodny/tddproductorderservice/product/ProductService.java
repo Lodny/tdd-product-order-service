@@ -10,8 +10,7 @@ class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void addProduct(final AddProductRequest addProductRequest) {
-        Product product = new Product(addProductRequest.name(), addProductRequest.price(), addProductRequest.discountPolicy());
-        productRepository.save(product);
+    public Product addProduct(final Product product) {
+        return productRepository.save(product);
     }
 }
